@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>{{ page.title }} - {{ site.title }}</title>
+    <link rel="stylesheet" href="{{ "/assets/stylesheets/main.css" | relative_url }}">
+  </head>
+  <body>
+    {% include header.html %}
+    <div class="bg-white">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+          {{ content }}
+        </main>
+      </div>
+    </div>
+    {% include footer.html %}
+    <script src="{{ "/assets/javascripts/hamburger_toggle.js" | relative_url }}"></script>
+  </body>
+</html>

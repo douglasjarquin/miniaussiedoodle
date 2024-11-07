@@ -1,0 +1,12 @@
+---
+layout: default
+title: "Available Puppies"
+---
+
+{% assign page = site.data.pages | where: "name", "Available Puppies" | first %}
+
+<section class="py-12">
+  <article class="prose prose-img:rounded-xl prose-a:text-blue-400 prose-a:border-b-2 prose-a:border-blue-200 hover:prose-a:border-blue-400 prose-a:no-underline prose-h1:text-5xl w-full prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-lg prose-p:text-lg prose-ul:text-lg prose-ol:text-lg prose-blockquote:text-lg prose-img:shadow-xl prose-p:text-storm-dust-700 prose-headings:font-serif prose-headings:text-storm-dust-700 active:prose-a:border-b-4 prose-ul:text-storm-dust-700 prose-li:text-storm-dust-700 prose-strong:text-storm-dust-700 prose-li:marker:text-storm-dust-700">
+    {{ page.body | markdownify }}
+  </article>
+</section>

@@ -1,0 +1,90 @@
+<header class="bg-mandys-pink">
+  <div class="mx-auto max-w-7xl sm:px- lg:divide-y lg:divide-mandys-pink-600">
+    <div class="relative flex h-16 justify-between">
+      <div class="relative z-10 flex px-8 lg:px-0">
+        <div class="flex flex-shrink-0 items-center">
+          <a
+            href="/"
+          >
+            <img class="h-12 w-auto" src="/assets/images/miami-mini-doodle-icon.png" alt="Mini Aussiedoodle Breeders">
+          </a>
+        </div>
+      </div>
+      <div class="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
+        <div class="w-full sm:max-w-xs"></div>
+      </div>
+      <div class="relative z-10 flex items-center lg:hidden" id="hamburger-button">
+        <!-- Mobile menu button -->
+        <button type="button" class="relative inline-flex items-center justify-center rounded-md mr-6 p-2 text-storm-dust-700 hover:bg-storm-dust-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+          <span class="absolute -inset-0.5"></span>
+          <span class="sr-only">Open menu</span>
+          <!--
+            Icon when menu is closed.
+
+            Menu open: "hidden", Menu closed: "block"
+          -->
+          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <!--
+            Icon when menu is open.
+
+            Menu open: "block", Menu closed: "hidden"
+          -->
+          <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
+        <div class="relative ml-4 flex-shrink-0">
+          <div>
+            <a href="/application" class="w-auto font-semibold bg-white text-storm-dust-700 py-2 px-3 rounded-md border-2 border-r-4 border-b-4 border-mandys-pink-600 lg:hover:shadow-lg active:border-l-4 active:border-t-4 active:border-b-2 active:border-r-2">
+              Puppy Application <span aria-hidden="true">🐾</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="hidden lg:flex lg:space-x-8 lg:py-4" aria-label="Global">
+      {% for page in site.data.pages %}
+      {% if page.header == true %}
+      <a
+        href="/{{ page.slug }}"
+        class="inline-flex items-center bg-mandys-pink-500 px-3 py-2 text-md text-storm-dust-700 border-b hover:border-mandys-pink-600 border-mandys-pink-500 font-semibold"        aria-current="page"
+      >
+        {{ page.name }}
+      </a>
+      {% endif %}
+      {% endfor %}
+    </nav>
+  </div>
+
+  <!-- Mobile menu, show/hide based on menu state. -->
+  <nav class="hidden bg-white" aria-label="Global" id="mobile-menu">
+    <div class="my-8">
+      <ul class="ml-6">
+      {% for page in site.data.pages %}
+      {% if page.header == true %}
+      <li class="py-2">
+        <a
+          href="/{{ page.slug }}"
+          class="p-2 text-md font-semibold text-storm-dust-700 border-b hover:border-storm-dust-700 border-white"
+          aria-current="page"
+        >
+          {{ page.name }}
+        </a>
+      </li>
+      {% endif %}
+      {% endfor %}
+      </ul>
+    </div>
+    <div class="">
+      <div class="pl-8">
+        <a href="/application" class="w-auto font-semibold bg-white text-storm-dust-700 py-2 px-3 rounded-md border-2 border-r-4 border-b-4 border-mandys-pink-600 lg:hover:shadow-lg active:border-l-4 active:border-t-4 active:border-b-2 active:border-r-2">
+          Puppy Application <span aria-hidden="true">🐾</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
