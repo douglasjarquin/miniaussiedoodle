@@ -1,52 +1,67 @@
-# Jekyllwind: a Jekyll + Tailwind CSS boilerplate
+# Mini Aussiedoodle
 
-![Jekyll + Tailwind CSS](https://mzrn.sh/assets/uploads/jekyll-tailwindcss.png)
+## Development
 
-This boilerplate is based on the following [blog post](https://mzrn.sh/2022/04/09/starting-a-blank-jekyll-site-with-tailwind-css-in-2022/). If you run into any
-issues during setup, try to follow the steps laid out in there, it may help.
+This project uses Jekyll and Wrangler to serve the site locally. To start the development server, run the following commands:
 
-## Installation
-
-### 1. Download the boilerplate
-Create a directory for your project and download the latest Jekyllwind in it.
-
-A fancy way to do it is this:
-
-```shell
-mkdir YOUR_PROJECT && cd YOUR_PROJECT && git init
-curl -L https://codeload.github.com/mzrnsh/jekyllwind/tar.gz/refs/tags/v1.0.0 | tar -xz --strip-components=1
+```
+bundle install
+npm install
+bundle exec jekyll serve --livereload
+npx wrangler pages dev _site
 ```
 
-This is tested and works on macOS Monterey. If it doesn't work as expected on your machine, you can take an alternative route and download the boilerplate manually from the GitHub UI:
+Note: I should be able to improve this in the future. We need the `jekyll serve` command to complile the site and download data from airtable, but the `wrangler dev` command to build functions.
 
-- Option 1: get the [latest release](https://github.com/mzrnsh/jekyllwind/releases/latest) and unzip in your project directory
-- Option 2: download the repository as zip, unzip somewhere, and copy the contents of the `dist/` folder into your project directory
+## Production
 
-### 2. Install Ruby gems and Node packages
-In your terminal `cd` to the project directory and run the following commands:
+Deploying to production is done through Cloudflare Pages. To deploy, push to the `main` branch.
 
-```shell
-bundle
-yarn
+### Airtable Webhooks
+
+While the site is static, some of the data comes from Airtable to allow clients to more easily update the site. To do this, we use a webhook to trigger a build when the Airtable data changes. 
+
+There are two known limitations with this approach:
+
+1. Airtable webhooks only trigger GET requests, so we can't send a payload directly to the Cloudflare Pages Deploy Hook.
+2. Airtable webhooks expire after 7 days, so we need to manually refresh them.
+
+In order to work around these limitations, we use a Cloudflare Worker to act as a proxy between Airtable and Cloudflare Pages. This worker listens for requests from Airtable, and then triggers the Cloudflare Pages Deploy Hook. In addition, we have a separate Cloudflare Worker that runs on a schedule to refresh the Airtable webhook.
+
+```mermaid
+graph TD
+    A[Airtable] -->|Webhook| B[Cloudflare Pages Function]
+    B -->|Deploy Hook| C[Cloudflare Pages]
+    D[Cloudflare Worker] -->|Schedule| A
 ```
 
-**Note for npm users:** If you prefer installing packages via npm instead of yarn, open the `_config.yml` file in your editor and replace `yarn.lock` with `package-lock.json` on line 15.
+1. Create a Cloudflare "Deploy hook" in the Cloudflare dashboard.
+2. Set the `CLOUDFLARE_HOOK_ID` variable.
+3. Create a new Airtable webhook that calls the "update" Cloudflare Function.
+4. Create a Cloudflare Worker that hits the "refresh" Cloudflare Function on a schedule.
 
-That's it, you are ready 🎉
+Use the following commands to create and audit the webhooks:
 
-## Deployment tips
+```sh
+# list webhooks
+source .env ; curl "https://api.airtable.com/v0/bases/${AIRTABLE_BASE_ID}/webhooks" -H "Authorization: Bearer ${AIRTABLE_ACCESS_TOKEN}"
 
-### 1. Netlify
-
-You may need to alter the default build command to `JEKYLL_ENV=production bundle exec jekyll build`. More details available [here](https://mzrn.sh/2022/04/09/starting-a-blank-jekyll-site-with-tailwind-css-in-2022/#61-netlify).
-
-### 2. GitHub Pages
-
-Since this boilerplate uses PostCSS, it won't work on GitHub Pages out of box. Instead, you will need to use GitHub Actions. Step-by-step instructions available [here](https://mzrn.sh/2023/10/26/how-to-use-tailwind-css-with-jekyll-on-github-pages/).
-
-## Contribution
-
-Feel free to send PRs or beers 🙌
-
-## License
-MIT
+# create webhook
+# make sure to update the recordChangeScope to the correct table
+source .env ; curl -X POST "https://api.airtable.com/v0/bases/${AIRTABLE_BASE_ID}/webhooks" \
+-H "Authorization: Bearer ${AIRTABLE_ACCESS_TOKEN}" \
+-H "Content-Type: application/json" \
+--data '{
+    "notificationUrl": "https://www.miniaussiedoodle.dog/update",
+    "specification": {
+      "options": {
+        "filters": {
+          "dataTypes": [
+            "tableData"
+          ],
+          "recordChangeScope": "tblahImc8fNVCBelO"
+        }
+      }
+    }
+  }'
+```
