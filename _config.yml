@@ -21,3 +21,6 @@ collections:
     permalink: /:name
 
 timezone: America/New_York
+
+compress_html:
+  blanklines: true

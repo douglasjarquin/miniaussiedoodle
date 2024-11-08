@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>{% if page.title %}{{ page.title | append: ' &mdash; ' }}{% endif %}{{ site.title | smartify }}</title>
     {% seo %}
+    {% include favicons.html %}
     <link rel="stylesheet" href="{{ "/assets/stylesheets/miniaussiedoodle.css" | relative_url }}">
   </head>
   <body>
