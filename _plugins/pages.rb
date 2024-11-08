@@ -21,6 +21,9 @@ module Jekyll
 ---
 layout: page
 title: "#{page_title}"
+permalink: /#{page_name}/
+description: |
+  #{page['description']}
 ---
 
 {% assign page = site.data.pages | where: "name", "#{page_title}" | first %}

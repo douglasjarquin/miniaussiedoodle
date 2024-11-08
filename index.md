@@ -1,11 +1,10 @@
 ---
-layout: default
+layout: page
+permalink: /
+description: |
+  Welcome to MiniAussieDoodle.dog! Discover the charm, intelligence, and playful spirit of Mini Aussiedoodles. Our site is dedicated to providing you with everything you need to know about these lovable, hypoallergenic companions – from their unique traits to training tips and health care essentials. Whether you’re a first-time pet parent or a seasoned dog lover, we’re here to guide you in choosing, raising, and enjoying life with your Mini Aussiedoodle. Dive into resources on their personality, care, and why they’re the perfect addition to any family!
 ---
 
 {% assign page = site.data.pages | where: "name", "Home" | first %}
 
-<section class="py-12">
-  <article class="prose prose-img:rounded-xl prose-a:text-blue-400 prose-a:border-b-2 prose-a:border-blue-200 hover:prose-a:border-blue-400 prose-a:no-underline prose-h1:text-5xl w-full prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-lg prose-p:text-lg prose-ul:text-lg prose-ol:text-lg prose-blockquote:text-lg prose-img:shadow-xl prose-p:text-storm-dust-700 prose-headings:font-serif prose-headings:text-storm-dust-700 active:prose-a:border-b-4 prose-ul:text-storm-dust-700 prose-li:text-storm-dust-700 prose-strong:text-storm-dust-700 prose-li:marker:text-storm-dust-700">
-    {{ page.body | markdownify }}
-  </article>
-</section>
+{{ page.body | markdownify }}

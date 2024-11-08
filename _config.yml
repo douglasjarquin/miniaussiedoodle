@@ -4,6 +4,7 @@ title: 'Mini Aussiedoodle'
 
 plugins:
   - jekyll-postcss
+  - jekyll-seo-tag
 
 postcss:
   cache: false
@@ -18,3 +19,5 @@ collections:
   pages:
     output: true
     permalink: /:name
+
+timezone: America/New_York
