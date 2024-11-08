@@ -15,7 +15,7 @@ module Jekyll
 
       tables.each do |table_name|
         table = airtable.table(ENV['AIRTABLE_BASE_ID'], table_name)
-        records = table.records
+        records = table.records(filter: '{Status} = "Published"')
 
         unless records.empty?
           # Write data to _data directory
@@ -25,7 +25,6 @@ module Jekyll
 
             file.write(warning + data.to_yaml)
           end
-
 
         else
           puts "Skipping #{table_name} as it came back with no records..."
