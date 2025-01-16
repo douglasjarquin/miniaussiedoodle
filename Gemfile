@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+gem 'base64'
+gem 'logger'
+gem 'benchmark'
+gem 'mutex_m'
 gem 'jekyll'
 gem 'webrick'
 gem 'jekyll-postcss'

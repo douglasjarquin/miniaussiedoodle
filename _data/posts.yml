@@ -17,6 +17,20 @@
   slug: hello-world
   id: rec5rtrM8NcHbOVsV
 - !ruby/hash:ActiveSupport::HashWithIndifferentAccess
+  body: 'Yes, puppies.
+
+    '
+  category: Tips
+  title: Puppies are one of my favorites things!
+  tags:
+  - rec9KPzyTXa98mOtp
+  date: '2024-12-17T02:37:00.000Z'
+  status: Published
+  name_(from_tags):
+  - diet
+  slug: puppies-are-one-of-my-favorites-things
+  id: recVRawR5axTbb8dH
+- !ruby/hash:ActiveSupport::HashWithIndifferentAccess
   body: "Test\t\t\n"
   category: Tips
   title: Test
