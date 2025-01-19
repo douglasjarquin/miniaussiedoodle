@@ -7,7 +7,7 @@ This project uses Jekyll and Wrangler to serve the site locally. To start the de
 ```
 bundle install
 npm install
-bundle exec jekyll serve --livereload
+JEKYLL_ENV=development bundle exec jekyll serve --livereload
 npx wrangler pages dev _site
 ```
 

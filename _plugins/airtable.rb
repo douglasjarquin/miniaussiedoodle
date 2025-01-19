@@ -1,4 +1,3 @@
-require 'dotenv/load'
 require 'airtable'
 require 'active_support/all'
 require 'yaml'
@@ -9,15 +8,31 @@ module Jekyll
     safe true
     priority :highest
 
-    def generate(site)
-      airtable = Airtable::Client.new(ENV['AIRTABLE_ACCESS_TOKEN'])
-      tables = ["Pages", "Posts"]
+    TABLES = ["Pages", "Posts"]
 
-      tables.each do |table_name|
-        table = airtable.table(ENV['AIRTABLE_BASE_ID'], table_name)
+    def generate(site)
+      if ENV['JEKYLL_ENV'] == 'development'
+        puts "Environment is development. Using cached data..."
+        use_cached_data(site)
+      else
+        puts "Environment is production or unknown. Fetching fresh data from Airtable..."
+        fetch_and_cache_data(site)
+      end
+    end
+
+    private
+
+    def fetch_and_cache_data(site)
+      airtable = Airtable::Client.new(ENV['AIRTABLE_ACCESS_TOKEN'])
+      base_id = ENV['AIRTABLE_BASE_ID']
+
+      TABLES.each do |table_name|
+        puts "Fetching data for table: #{table_name}"
+        table = airtable.table(base_id, table_name)
         records = table.records(filter: '{Status} = "Published"')
 
         unless records.empty?
+          puts "Writing data for table: #{table_name}"
           # Write data to _data directory
           File.open(File.join(site.source, "_data/#{table_name.downcase}.yml"), 'w') do |file|
             data = records.map(&:attributes)
@@ -25,9 +40,19 @@ module Jekyll
 
             file.write(warning + data.to_yaml)
           end
-
         else
           puts "Skipping #{table_name} as it came back with no records..."
+        end
+      end
+    end
+
+    def use_cached_data(site)
+      TABLES.each do |table_name|
+        cached_file = File.join(site.source, "_data/#{table_name.downcase}.yml")
+        if File.exist?(cached_file)
+          puts "Using cached data for table: #{table_name}"
+        else
+          puts "Cached data for #{table_name} not found. Please run in production mode to fetch data from Airtable."
         end
       end
     end
