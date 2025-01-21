@@ -1,3 +1,4 @@
+require 'dotenv/load'
 require 'airtable'
 require 'active_support/all'
 require 'yaml'
@@ -15,8 +16,13 @@ module Jekyll
         puts "Environment is development. Using cached data..."
         use_cached_data(site)
       else
-        puts "Environment is production or unknown. Fetching fresh data from Airtable..."
-        fetch_and_cache_data(site)
+        if ENV['AIRTABLE_ACCESS_TOKEN'].nil? || ENV['AIRTABLE_BASE_ID'].nil?
+          puts "Environment variables for Airtable are not set. Using cached data..."
+          use_cached_data(site)
+        else
+          puts "Environment is production or unknown. Fetching fresh data from Airtable..."
+          fetch_and_cache_data(site)
+        end
       end
     end
 

@@ -197,6 +197,7 @@ DEPENDENCIES
   airtable
   base64
   benchmark
+  dotenv
   jekyll
   jekyll-dotenv
   jekyll-postcss
